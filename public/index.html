@@ -10,7 +10,8 @@
     form { display: flex; gap: 8px; }
     input { flex: 1; padding: 8px; }
     button { padding: 8px 12px; cursor: pointer; }
-    li { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    ul { padding: 0; list-style: none; }
+    li { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #eee; }
     .feita span { text-decoration: line-through; color: #888; }
     footer { margin-top: 32px; font-size: .8rem; color: #666; }
   </style>
@@ -22,35 +23,59 @@
     <button>Adicionar</button>
   </form>
   <ul id="lista"></ul>
-  <footer>Aplicação web publicada em plataforma de computação em nuvem — Ambientes de Desenvolvimento de Software, UNIFOR.</footer>
+  <footer>Aplicação web publicada em plataforma de computação em nuvem (Microsoft Azure) — Ambientes de Desenvolvimento de Software, UNIFOR.</footer>
 
   <script>
+    // As tarefas ficam salvas no próprio navegador (localStorage).
+    const CHAVE = 'tarefas';
     const lista = document.getElementById('lista');
 
-    async function carregar() {
-      const r = await fetch('/api/tarefas');
-      const tarefas = await r.json();
+    function ler() {
+      try { return JSON.parse(localStorage.getItem(CHAVE)) || []; }
+      catch (e) { return []; }
+    }
+    function salvar(tarefas) {
+      try { localStorage.setItem(CHAVE, JSON.stringify(tarefas)); } catch (e) {}
+    }
+
+    function render() {
+      const tarefas = ler();
       lista.innerHTML = '';
       tarefas.forEach(t => {
         const li = document.createElement('li');
         if (t.concluida) li.className = 'feita';
-        li.innerHTML = `<span>${t.titulo.replace(/</g, '&lt;')}</span>
-          <div><button data-a="alt">✔</button> <button data-a="del">✖</button></div>`;
-        li.querySelector('[data-a=alt]').onclick = async () => { await fetch('/api/tarefas/' + t.id, { method: 'PUT' }); carregar(); };
-        li.querySelector('[data-a=del]').onclick = async () => { await fetch('/api/tarefas/' + t.id, { method: 'DELETE' }); carregar(); };
+        const span = document.createElement('span');
+        span.textContent = t.titulo;
+        const acoes = document.createElement('div');
+        const bAlt = document.createElement('button');
+        bAlt.textContent = '✔';
+        bAlt.onclick = () => {
+          const todas = ler();
+          const alvo = todas.find(x => x.id === t.id);
+          if (alvo) alvo.concluida = !alvo.concluida;
+          salvar(todas); render();
+        };
+        const bDel = document.createElement('button');
+        bDel.textContent = '✖';
+        bDel.onclick = () => { salvar(ler().filter(x => x.id !== t.id)); render(); };
+        acoes.append(bAlt, ' ', bDel);
+        li.append(span, acoes);
         lista.appendChild(li);
       });
     }
 
-    document.getElementById('form').onsubmit = async e => {
+    document.getElementById('form').onsubmit = e => {
       e.preventDefault();
-      const titulo = document.getElementById('titulo').value;
-      await fetch('/api/tarefas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ titulo }) });
+      const titulo = document.getElementById('titulo').value.trim();
+      if (!titulo) return;
+      const tarefas = ler();
+      tarefas.push({ id: Date.now(), titulo, concluida: false });
+      salvar(tarefas);
       e.target.reset();
-      carregar();
+      render();
     };
 
-    carregar();
+    render();
   </script>
 </body>
 </html>
