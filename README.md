@@ -48,17 +48,25 @@ Funcionamento — adicionar, concluir e remover tarefas:
 
 ## Requisitos atendidos (versão 2.0)
 
-Sistema: **Gerenciador de Tarefas** com usuários, categorias e painel administrativo. Equipe individual (1 pessoa) → mínimo de 6 transações; o sistema possui **9**.
+Sistema escolhido: **Controle de Biblioteca** (acervo, empréstimos, devoluções com multa e administração de usuários). Equipe individual (1 pessoa) → mínimo de 6 transações; o sistema possui **10**.
 
 | Requisito | Como foi atendido |
 |---|---|
-| Equipe e transações | 9 transações: cadastrar usuário, login, criar categoria, criar / editar / concluir / excluir tarefa, alterar papel de usuário (admin), excluir usuário (admin) |
+| Trabalho a escolher | Sistema de controle de biblioteca |
+| Equipe e transações | 10 transações: cadastrar usuário, login, cadastrar livro, editar livro, excluir livro, emprestar livro, devolver livro (com multa), renovar empréstimo, alterar papel de usuário, excluir usuário |
 | Frontend | HTML, CSS, JavaScript e **React** (Vite) em `frontend/` |
 | Backend | **Node.js + Express**, Web Service **REST** com rotas em `/api/*` (`backend/src/app.js`) |
-| Controle de acesso | **Autenticação** com JWT (senhas com bcrypt) e **autorização** por papel (`usuario` / `admin`); cada usuário acessa só as próprias tarefas; rotas `/api/admin/*` só para admin. O primeiro usuário cadastrado vira admin |
+| Controle de acesso | **Autenticação** com JWT (senhas com bcrypt) e **autorização** por papel: `leitor` consulta o acervo e gerencia só os próprios empréstimos; `admin` (bibliotecário) gerencia acervo, todos os empréstimos e usuários. O primeiro usuário cadastrado vira admin |
 | SGBD | **SQLite** (módulo nativo `node:sqlite`), esquema em `backend/src/db.js` |
 | Controle de versão | Git/GitHub, com commits por etapa |
-| Testes formais | 11 testes automatizados dos serviços (`node:test` + `supertest`) em `backend/test/` |
+| Testes formais | 16 testes automatizados dos serviços (`node:test` + `supertest`) em `backend/test/` |
+
+### Regras de negócio
+
+- Prazo de empréstimo de 14 dias; uma renovação de 7 dias, não permitida em atraso.
+- Limite de 3 empréstimos em aberto por usuário; não é possível pegar dois exemplares do mesmo livro.
+- Multa de R$ 1,00 por dia de atraso, calculada na devolução.
+- Livro com empréstimo em aberto não pode ser excluído nem ter o total de exemplares reduzido abaixo do emprestado; usuário com empréstimo em aberto não pode ser excluído.
 
 ### Rotas da API
 
@@ -66,10 +74,11 @@ Sistema: **Gerenciador de Tarefas** com usuários, categorias e painel administr
 |---|---|---|
 | POST | `/api/auth/registrar`, `/api/auth/login` | público |
 | GET | `/api/auth/eu` | autenticado |
-| GET/POST | `/api/categorias` | autenticado |
-| GET/POST | `/api/tarefas` | autenticado |
-| PUT/DELETE | `/api/tarefas/:id` | autenticado (dono) |
-| PATCH | `/api/tarefas/:id/concluir` | autenticado (dono) |
+| GET | `/api/livros?q=` | autenticado |
+| POST | `/api/livros` | admin |
+| PUT/DELETE | `/api/livros/:id` | admin |
+| GET/POST | `/api/emprestimos` | autenticado (leitor vê só os seus) |
+| PATCH | `/api/emprestimos/:id/devolver`, `/renovar` | dono do empréstimo ou admin |
 | GET | `/api/admin/usuarios` | admin |
 | PATCH | `/api/admin/usuarios/:id/papel` | admin |
 | DELETE | `/api/admin/usuarios/:id` | admin |
@@ -87,7 +96,7 @@ JWT_SECRET=troque-isto npm start   # servidor em http://localhost:3000 (API + Re
 
 Para desenvolvimento: `npm --prefix backend start` e, em outro terminal, `npm --prefix frontend run dev`.
 
-Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_FILE` (arquivo SQLite, padrão `dados.sqlite`).
+Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_FILE` (arquivo SQLite, padrão `biblioteca.sqlite`).
 
 > **Implantação:** o Azure Static Web Apps publica apenas o frontend (`frontend/dist`). A API Node precisa ser hospedada em um serviço de servidor (por exemplo, Azure App Service), pois o Static Web Apps não executa o Express.
 

@@ -1,7 +1,7 @@
 const { DatabaseSync } = require('node:sqlite');
 
 // Abre (ou cria) o banco SQLite e garante o esquema das tabelas.
-function abrirBanco(arquivo = process.env.DB_FILE || 'dados.sqlite') {
+function abrirBanco(arquivo = process.env.DB_FILE || 'biblioteca.sqlite') {
   const db = new DatabaseSync(arquivo);
   db.exec('PRAGMA foreign_keys = ON');
   db.exec(`
@@ -10,23 +10,27 @@ function abrirBanco(arquivo = process.env.DB_FILE || 'dados.sqlite') {
       nome TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
       senha_hash TEXT NOT NULL,
-      papel TEXT NOT NULL DEFAULT 'usuario' CHECK (papel IN ('usuario','admin')),
+      papel TEXT NOT NULL DEFAULT 'leitor' CHECK (papel IN ('leitor','admin')),
       criado_em TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
-    CREATE TABLE IF NOT EXISTS categorias (
+    CREATE TABLE IF NOT EXISTS livros (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-      nome TEXT NOT NULL,
-      UNIQUE (usuario_id, nome)
-    );
-    CREATE TABLE IF NOT EXISTS tarefas (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-      categoria_id INTEGER REFERENCES categorias(id) ON DELETE SET NULL,
       titulo TEXT NOT NULL,
-      descricao TEXT NOT NULL DEFAULT '',
-      concluida INTEGER NOT NULL DEFAULT 0,
-      criada_em TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+      autor TEXT NOT NULL,
+      isbn TEXT NOT NULL DEFAULT '',
+      exemplares_total INTEGER NOT NULL CHECK (exemplares_total >= 0),
+      exemplares_disponiveis INTEGER NOT NULL CHECK (exemplares_disponiveis >= 0),
+      ativo INTEGER NOT NULL DEFAULT 1
+    );
+    CREATE TABLE IF NOT EXISTS emprestimos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      livro_id INTEGER NOT NULL REFERENCES livros(id),
+      usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
+      data_emprestimo TEXT NOT NULL,
+      data_prevista TEXT NOT NULL,
+      data_devolucao TEXT,
+      renovacoes INTEGER NOT NULL DEFAULT 0,
+      multa_centavos INTEGER NOT NULL DEFAULT 0
     );
   `);
   return db;

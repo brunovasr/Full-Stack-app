@@ -10,3 +10,5 @@ li { display: flex; justify-content: space-between; align-items: center; gap: 8p
 .topo { display: flex; justify-content: space-between; align-items: center; }
 .acoes { display: flex; gap: 4px; }
 small { color: #666; }
+.abas { display: flex; gap: 4px; margin: 12px 0; }
+.abas .ativa { font-weight: bold; background: #dde7ff; }
