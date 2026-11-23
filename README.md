@@ -46,8 +46,54 @@ Funcionamento — adicionar, concluir e remover tarefas:
 
 ![Tarefa removida](docs/img/07-tarefa-removida.png)
 
+## Requisitos atendidos (versão 2.0)
+
+Sistema: **Gerenciador de Tarefas** com usuários, categorias e painel administrativo. Equipe individual (1 pessoa) → mínimo de 6 transações; o sistema possui **9**.
+
+| Requisito | Como foi atendido |
+|---|---|
+| Equipe e transações | 9 transações: cadastrar usuário, login, criar categoria, criar / editar / concluir / excluir tarefa, alterar papel de usuário (admin), excluir usuário (admin) |
+| Frontend | HTML, CSS, JavaScript e **React** (Vite) em `frontend/` |
+| Backend | **Node.js + Express**, Web Service **REST** com rotas em `/api/*` (`backend/src/app.js`) |
+| Controle de acesso | **Autenticação** com JWT (senhas com bcrypt) e **autorização** por papel (`usuario` / `admin`); cada usuário acessa só as próprias tarefas; rotas `/api/admin/*` só para admin. O primeiro usuário cadastrado vira admin |
+| SGBD | **SQLite** (módulo nativo `node:sqlite`), esquema em `backend/src/db.js` |
+| Controle de versão | Git/GitHub, com commits por etapa |
+| Testes formais | 11 testes automatizados dos serviços (`node:test` + `supertest`) em `backend/test/` |
+
+### Rotas da API
+
+| Método | Rota | Acesso |
+|---|---|---|
+| POST | `/api/auth/registrar`, `/api/auth/login` | público |
+| GET | `/api/auth/eu` | autenticado |
+| GET/POST | `/api/categorias` | autenticado |
+| GET/POST | `/api/tarefas` | autenticado |
+| PUT/DELETE | `/api/tarefas/:id` | autenticado (dono) |
+| PATCH | `/api/tarefas/:id/concluir` | autenticado (dono) |
+| GET | `/api/admin/usuarios` | admin |
+| PATCH | `/api/admin/usuarios/:id/papel` | admin |
+| DELETE | `/api/admin/usuarios/:id` | admin |
+
+### Como executar
+
+Requer Node.js 22 ou superior.
+
+```bash
+npm run install:tudo   # instala dependências do backend e do frontend
+npm test               # executa os testes formais da API
+npm run build          # gera o frontend (frontend/dist)
+JWT_SECRET=troque-isto npm start   # servidor em http://localhost:3000 (API + React)
+```
+
+Para desenvolvimento: `npm --prefix backend start` e, em outro terminal, `npm --prefix frontend run dev`.
+
+Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_FILE` (arquivo SQLite, padrão `dados.sqlite`).
+
+> **Implantação:** o Azure Static Web Apps publica apenas o frontend (`frontend/dist`). A API Node precisa ser hospedada em um serviço de servidor (por exemplo, Azure App Service), pois o Static Web Apps não executa o Express.
+
 ## Estrutura do repositório
 
-- `public/index.html` — aplicação publicada (as tarefas ficam salvas no navegador, via `localStorage`)
+- `backend/` — API Node/Express, banco SQLite e testes (`backend/test/`)
+- `frontend/` — aplicação React (Vite)
 - `.github/workflows/` — fluxo de implantação do Azure Static Web Apps
-- `server.js`, `package.json` — versão inicial com servidor Node/Express, usada no teste local
+- `docs/img/` — prints da publicação na nuvem (atividade anterior)
