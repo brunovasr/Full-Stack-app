@@ -3,9 +3,9 @@
 Plataforma sugerida: **Microsoft Azure for Students** + **App Service** (não exige cartão de crédito; basta o e-mail da UNIFOR).
 
 ## Parte 1 — Testar no seu computador (opcional, 2 min)
-1. Instale o Node.js (https://nodejs.org), versão LTS.
-2. Na pasta do projeto: `npm install` e depois `npm start`.
-3. Abra http://localhost:3000 — deve aparecer a Lista de Tarefas.
+1. Instale o Node.js (versão 22 ou superior, https://nodejs.org).
+2. Na pasta do projeto: `npm run install:tudo`, `npm run build` e depois `npm start`.
+3. Abra http://localhost:3000 — deve aparecer a tela de login do sistema de biblioteca.
 
 ## Parte 2 — Colocar no GitHub
 1. Crie um repositório novo (ex.: `app-nuvem-unifor`) na sua conta `brunovasr`.
@@ -38,7 +38,7 @@ Plataforma sugerida: **Microsoft Azure for Students** + **App Service** (não ex
 4. Quando terminar, abra o recurso → **Central de Implantação (Deployment Center)**:
    - Origem: **GitHub** → autorize → escolha o repositório e a branch `main` → **Salvar**.
 5. Aguarde o deploy (alguns minutos, aba *Logs*).
-6. Abra a **URL padrão** do recurso. Se aparecer a Lista de Tarefas, está em operação.
+6. Abra a **URL padrão** do recurso. Se aparecer a tela de login da biblioteca, está em operação.
 
 ## Parte 5 — Entrega
 Entregue a URL (`https://SEU-NOME.azurewebsites.net`), mais prints da conta e do app funcionando, se o professor pedir.

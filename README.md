@@ -1,52 +1,12 @@
-# Aplicação Web na Nuvem — Ambientes de Desenvolvimento de Software
+# Sistema de Controle de Biblioteca
 
-**Aluno:** Bruno Vasconcelos Rocha
+**Aluno:** Bruno Vasconcelos Rocha — **Matrícula:** 2612659
 **Curso:** Análise e Desenvolvimento de Sistemas — UNIFOR
 **Disciplina:** Ambientes de Desenvolvimento de Software
 
-## Aplicação em operação
+Sistema web de controle de biblioteca: acervo, empréstimos, renovações, devoluções com multa por atraso e administração de usuários. Frontend em React, backend REST em Node.js/Express, banco SQLite, autenticação JWT e testes automatizados.
 
-URL pública: **https://salmon-desert-024b56b10.4.azurestaticapps.net**
-
-Aplicação web simples (Lista de Tarefas) em HTML, CSS e JavaScript, publicada no **Microsoft Azure** pelo serviço **Azure Static Web Apps** (plano gratuito), com implantação contínua a partir deste repositório via GitHub Actions.
-
-## Atividade
-
-1. Criar conta em uma plataforma de computação em nuvem.
-2. Selecionar uma aplicação para desenvolvimento de uma aplicação Web.
-3. Publicar a URL da aplicação em operação na plataforma.
-
-### 1. Conta criada na plataforma de nuvem
-
-Conta criada no Microsoft Azure, com a assinatura **Azure subscription 1** ativa.
-
-![Assinatura ativa no Azure](docs/img/01-assinatura-azure.png)
-
-### 2. Aplicação selecionada e criada
-
-Foi criado o recurso **app-bruno-unifor** (Aplicativo Web Estático, plano Free), conectado ao branch `main` deste repositório.
-
-![Recurso Static Web App no portal do Azure](docs/img/02-recurso-static-web-app.png)
-
-Repositório no GitHub com o código da aplicação e o fluxo de trabalho gerado pelo Azure:
-
-![Repositório no GitHub](docs/img/03-repositorio-github.png)
-
-### 3. Aplicação em operação na nuvem
-
-Página acessada pela URL pública:
-
-![Aplicação em operação](docs/img/04-aplicacao-em-operacao.png)
-
-Funcionamento — adicionar, concluir e remover tarefas:
-
-![Tarefa adicionada](docs/img/05-tarefa-adicionada.png)
-
-![Tarefa concluída](docs/img/06-tarefa-concluida.png)
-
-![Tarefa removida](docs/img/07-tarefa-removida.png)
-
-## Requisitos atendidos (versão 2.0)
+## Requisitos atendidos
 
 Sistema escolhido: **Controle de Biblioteca** (acervo, empréstimos, devoluções com multa e administração de usuários). Equipe individual (1 pessoa) → mínimo de 6 transações; o sistema possui **10**.
 
@@ -100,9 +60,34 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 
 > **Implantação:** o Azure Static Web Apps publica apenas o frontend (`frontend/dist`). A API Node precisa ser hospedada em um serviço de servidor (por exemplo, Azure App Service), pois o Static Web Apps não executa o Express.
 
+## Telas do sistema
+
+| | |
+|---|---|
+| ![Login](docs/telas/01-login.png) | ![Cadastro](docs/telas/02-cadastro.png) |
+| ![Acervo do leitor](docs/telas/03-acervo-leitor.png) | ![Empréstimos do leitor](docs/telas/04-emprestimos-leitor.png) |
+| ![Acervo do bibliotecário](docs/telas/05-acervo-admin.png) | ![Empréstimos do bibliotecário](docs/telas/06-emprestimos-admin.png) |
+| ![Usuários](docs/telas/07-usuarios-admin.png) | ![Regra de exclusão](docs/telas/08-erro-exclusao.png) |
+
+## Entrega
+
+- Relatório em PDF: [`docs/entrega/Trabalho-Biblioteca-Bruno-Rocha-2612659.pdf`](docs/entrega/Trabalho-Biblioteca-Bruno-Rocha-2612659.pdf)
+- Saída dos testes e das chamadas à API: [`docs/entrega/evidencias.txt`](docs/entrega/evidencias.txt)
+
 ## Estrutura do repositório
 
 - `backend/` — API Node/Express, banco SQLite e testes (`backend/test/`)
 - `frontend/` — aplicação React (Vite)
 - `.github/workflows/` — fluxo de implantação do Azure Static Web Apps
+- `docs/telas/` — prints do sistema; `docs/entrega/` — PDF e evidências
 - `docs/img/` — prints da publicação na nuvem (atividade anterior)
+
+## Publicação na nuvem (atividade anterior)
+
+O frontend é publicado no **Microsoft Azure** pelo **Azure Static Web Apps** (plano gratuito), com implantação contínua via GitHub Actions. URL pública: **https://salmon-desert-024b56b10.4.azurestaticapps.net**
+
+![Assinatura ativa no Azure](docs/img/01-assinatura-azure.png)
+
+![Recurso Static Web App no portal do Azure](docs/img/02-recurso-static-web-app.png)
+
+![Repositório no GitHub](docs/img/03-repositorio-github.png)
