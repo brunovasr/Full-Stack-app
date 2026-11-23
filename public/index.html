@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista de Tarefas - Aplicação em Nuvem</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 520px; margin: 40px auto; padding: 0 16px; }
+    h1 { font-size: 1.4rem; }
+    form { display: flex; gap: 8px; }
+    input { flex: 1; padding: 8px; }
+    button { padding: 8px 12px; cursor: pointer; }
+    li { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    .feita span { text-decoration: line-through; color: #888; }
+    footer { margin-top: 32px; font-size: .8rem; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Lista de Tarefas</h1>
+  <form id="form">
+    <input id="titulo" placeholder="Nova tarefa" required>
+    <button>Adicionar</button>
+  </form>
+  <ul id="lista"></ul>
+  <footer>Aplicação web publicada em plataforma de computação em nuvem — Ambientes de Desenvolvimento de Software, UNIFOR.</footer>
+
+  <script>
+    const lista = document.getElementById('lista');
+
+    async function carregar() {
+      const r = await fetch('/api/tarefas');
+      const tarefas = await r.json();
+      lista.innerHTML = '';
+      tarefas.forEach(t => {
+        const li = document.createElement('li');
+        if (t.concluida) li.className = 'feita';
+        li.innerHTML = `<span>${t.titulo.replace(/</g, '&lt;')}</span>
+          <div><button data-a="alt">✔</button> <button data-a="del">✖</button></div>`;
+        li.querySelector('[data-a=alt]').onclick = async () => { await fetch('/api/tarefas/' + t.id, { method: 'PUT' }); carregar(); };
+        li.querySelector('[data-a=del]').onclick = async () => { await fetch('/api/tarefas/' + t.id, { method: 'DELETE' }); carregar(); };
+        lista.appendChild(li);
+      });
+    }
+
+    document.getElementById('form').onsubmit = async e => {
+      e.preventDefault();
+      const titulo = document.getElementById('titulo').value;
+      await fetch('/api/tarefas', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ titulo }) });
+      e.target.reset();
+      carregar();
+    };
+
+    carregar();
+  </script>
+</body>
+</html>
