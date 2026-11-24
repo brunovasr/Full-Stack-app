@@ -85,7 +85,7 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 ## Publicação na nuvem (sistema completo online)
 
 - **Frontend (tela):** Azure Static Web Apps — https://salmon-desert-024b56b10.4.azurestaticapps.net
-- **API (Node + SQLite):** Render (plano gratuito), definida em `render.yaml`. O frontend encontra a API pela URL em `frontend/public/config.js` (`window.API_URL`).
+- **API (Node + SQLite):** Render (plano gratuito), em https://biblioteca-unifor-api.onrender.com, definida em `render.yaml`. O frontend encontra a API pela URL em `frontend/public/config.js` (`window.API_URL`).
 - O disco do plano gratuito é temporário; por isso, com a variável `SEED_SENHA` definida, o sistema recria na inicialização as contas `bibliotecario@unifor.br` (bibliotecário) e `leitor@unifor.br` (leitor), com essa senha, e 4 livros de exemplo.
 - Variáveis na API: `JWT_SECRET`, `SEED_SENHA` e `CORS_ORIGIN` (endereço do Static Web Apps).
 
