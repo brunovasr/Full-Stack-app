@@ -82,6 +82,14 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 - `docs/telas/` — prints do sistema; `docs/entrega/` — PDF e evidências
 - `docs/img/` — prints da publicação na nuvem (atividade anterior)
 
+## Publicação na nuvem (sistema completo online)
+
+- **Frontend (tela):** Azure Static Web Apps — https://salmon-desert-024b56b10.4.azurestaticapps.net (workflow `azure-static-web-apps-*.yml`).
+- **API (Node + SQLite):** Azure App Service, publicada pelo workflow `deploy-api-app-service.yml`.
+- O frontend encontra a API pela URL definida em `frontend/public/config.js` (`window.API_URL`).
+
+Configuração do App Service: pilha Node 24 (ou 22 LTS), Linux, plano gratuito F1, e variáveis `JWT_SECRET` (valor secreto), `DB_FILE=/home/biblioteca.sqlite` (o diretório `/home` é persistente) e `CORS_ORIGIN=https://salmon-desert-024b56b10.4.azurestaticapps.net`. No GitHub: segredo `AZURE_WEBAPP_PUBLISH_PROFILE` e variável `AZURE_WEBAPP_NAME`.
+
 ## Publicação na nuvem (atividade anterior)
 
 O frontend é publicado no **Microsoft Azure** pelo **Azure Static Web Apps** (plano gratuito), com implantação contínua via GitHub Actions. URL pública: **https://salmon-desert-024b56b10.4.azurestaticapps.net**

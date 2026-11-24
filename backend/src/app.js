@@ -16,6 +16,21 @@ function criarApp(db, { agora = () => new Date() } = {}) {
   const app = express();
   app.use(express.json());
 
+  // CORS: permite que o frontend (hospedado em outro domínio) chame a API.
+  // Origens liberadas via CORS_ORIGIN (separadas por vírgula); "*" por padrão.
+  const origens = (process.env.CORS_ORIGIN || '*').split(',').map((o) => o.trim());
+  app.use((req, res, next) => {
+    const origem = req.headers.origin;
+    if (origem && (origens.includes('*') || origens.includes(origem))) {
+      res.setHeader('Access-Control-Allow-Origin', origens.includes('*') ? '*' : origem);
+      res.setHeader('Vary', 'Origin');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    }
+    if (req.method === 'OPTIONS') return res.status(204).end();
+    next();
+  });
+
   const texto = (v) => (typeof v === 'string' ? v.trim() : '');
   const publico = (u) => ({ id: u.id, nome: u.nome, email: u.email, papel: u.papel });
   const somarDias = (iso, dias) => new Date(new Date(iso).getTime() + dias * DIA_MS).toISOString();

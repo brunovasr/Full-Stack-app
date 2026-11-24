@@ -47,6 +47,15 @@ describe('Autenticação', () => {
   });
 });
 
+describe('CORS', () => {
+  test('responde ao preflight e libera a origem do frontend', async () => {
+    const r = await request(app).options('/api/livros').set('Origin', 'https://site.exemplo.net');
+    assert.equal(r.status, 204);
+    assert.equal(r.headers['access-control-allow-origin'], '*');
+    assert.match(r.headers['access-control-allow-headers'], /Authorization/);
+  });
+});
+
 describe('Acervo', () => {
   test('admin cadastra, edita, busca e exclui livro', async () => {
     const a = await registrar('Ana', 'ana@x.com');
