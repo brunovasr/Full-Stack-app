@@ -36,6 +36,9 @@ function criarApp(db, { agora = () => new Date() } = {}) {
   const somarDias = (iso, dias) => new Date(new Date(iso).getTime() + dias * DIA_MS).toISOString();
   const ehInteiro = (n) => Number.isInteger(n) && n >= 0;
 
+  // Verificação de saúde para a hospedagem (responde 200 sem exigir login).
+  app.get('/api/saude', (req, res) => res.json({ status: 'ok' }));
+
   // ---------- Autenticação ----------
   // Transação 1: cadastro de usuário
   app.post('/api/auth/registrar', (req, res) => {

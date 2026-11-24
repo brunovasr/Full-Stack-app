@@ -48,6 +48,14 @@ describe('Autenticação', () => {
   });
 });
 
+describe('Saúde', () => {
+  test('rota de saúde responde 200 sem token', async () => {
+    const r = await request(app).get('/api/saude');
+    assert.equal(r.status, 200);
+    assert.equal(r.body.status, 'ok');
+  });
+});
+
 describe('CORS', () => {
   test('responde ao preflight e libera a origem do frontend', async () => {
     const r = await request(app).options('/api/livros').set('Origin', 'https://site.exemplo.net');
