@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: biblioteca-unifor-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install --omit=dev
+    startCommand: node src/server.js
+    healthCheckPath: /api/auth/eu
+    envVars:
+      - key: NODE_VERSION
+        value: 24
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SEED_SENHA
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://salmon-desert-024b56b10.4.azurestaticapps.net

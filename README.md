@@ -84,11 +84,10 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 
 ## Publicação na nuvem (sistema completo online)
 
-- **Frontend (tela):** Azure Static Web Apps — https://salmon-desert-024b56b10.4.azurestaticapps.net (workflow `azure-static-web-apps-*.yml`).
-- **API (Node + SQLite):** Azure App Service, publicada pelo workflow `deploy-api-app-service.yml`.
-- O frontend encontra a API pela URL definida em `frontend/public/config.js` (`window.API_URL`).
-
-Configuração do App Service: pilha Node 24 (ou 22 LTS), Linux, plano gratuito F1, e variáveis `JWT_SECRET` (valor secreto), `DB_FILE=/home/biblioteca.sqlite` (o diretório `/home` é persistente) e `CORS_ORIGIN=https://salmon-desert-024b56b10.4.azurestaticapps.net`. No GitHub: segredo `AZURE_WEBAPP_PUBLISH_PROFILE` e variável `AZURE_WEBAPP_NAME`.
+- **Frontend (tela):** Azure Static Web Apps — https://salmon-desert-024b56b10.4.azurestaticapps.net
+- **API (Node + SQLite):** Render (plano gratuito), definida em `render.yaml`. O frontend encontra a API pela URL em `frontend/public/config.js` (`window.API_URL`).
+- O disco do plano gratuito é temporário; por isso, com a variável `SEED_SENHA` definida, o sistema recria na inicialização as contas `bibliotecario@unifor.br` (bibliotecário) e `leitor@unifor.br` (leitor), com essa senha, e 4 livros de exemplo.
+- Variáveis na API: `JWT_SECRET`, `SEED_SENHA` e `CORS_ORIGIN` (endereço do Static Web Apps).
 
 ## Publicação na nuvem (atividade anterior)
 

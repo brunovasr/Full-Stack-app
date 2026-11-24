@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const request = require('supertest');
 const { abrirBanco } = require('../src/db');
 const { criarApp } = require('../src/app');
+const { semear } = require('../src/seed');
 
 const DIA = 24 * 60 * 60 * 1000;
 let app, relogio;
@@ -195,5 +196,19 @@ describe('Administração de usuários', () => {
     assert.equal((await request(app).delete(`/api/admin/usuarios/${b.usuario.id}`).set(auth(a.token))).status, 409);
     assert.equal((await request(app).patch(`/api/admin/usuarios/${a.usuario.id}/papel`).set(auth(a.token)).send({ papel: 'leitor' })).status, 400);
     assert.equal((await request(app).delete(`/api/admin/usuarios/${a.usuario.id}`).set(auth(a.token))).status, 400);
+  });
+});
+
+describe('Dados de demonstração', () => {
+  test('semeia banco vazio uma única vez e permite login', async () => {
+    const db = abrirBanco(':memory:');
+    assert.equal(semear(db, undefined), false);
+    assert.equal(semear(db, 'demo1234'), true);
+    assert.equal(semear(db, 'demo1234'), false);
+    const a = criarApp(db);
+    const login = await request(a).post('/api/auth/login').send({ email: 'bibliotecario@unifor.br', senha: 'demo1234' });
+    assert.equal(login.body.usuario.papel, 'admin');
+    const livros = await request(a).get('/api/livros').set(auth(login.body.token));
+    assert.equal(livros.body.length, 4);
   });
 });
