@@ -81,6 +81,7 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 - **Contas de demonstração:** `bibliotecario@unifor.br` (bibliotecário) e `leitor@unifor.br` (leitor), com a senha definida em `SEED_SENHA` no Render.
 - O disco do plano gratuito é temporário: a cada reinício o banco é recriado, e com `SEED_SENHA` definida o sistema cria as duas contas e 4 livros de exemplo.
 - O serviço gratuito dorme após ~15 minutos sem uso; o primeiro acesso pode levar cerca de 50 segundos.
+- **Prova da publicação:** `docs/telas/09-api-render-live.png` (API *Live* no Render) e `docs/telas/10-sistema-online-azure.png` (sistema aberto no link do Azure).
 - Variáveis da API: `JWT_SECRET` (gerada pelo Render), `SEED_SENHA` e `CORS_ORIGIN`.
 
 ## Publicação na nuvem (atividade anterior)
