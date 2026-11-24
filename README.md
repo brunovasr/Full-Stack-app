@@ -19,7 +19,7 @@ Sistema escolhido: **Controle de Biblioteca** (acervo, empréstimos, devoluçõe
 | Controle de acesso | **Autenticação** com JWT (senhas com bcrypt) e **autorização** por papel: `leitor` consulta o acervo e gerencia só os próprios empréstimos; `admin` (bibliotecário) gerencia acervo, todos os empréstimos e usuários. O primeiro usuário cadastrado vira admin |
 | SGBD | **SQLite** (módulo nativo `node:sqlite`), esquema em `backend/src/db.js` |
 | Controle de versão | Git/GitHub, com commits por etapa |
-| Testes formais | 16 testes automatizados dos serviços (`node:test` + `supertest`) em `backend/test/` |
+| Testes formais | 19 testes automatizados dos serviços (`node:test` + `supertest`) em `backend/test/` |
 
 ### Regras de negócio
 
@@ -58,21 +58,7 @@ Para desenvolvimento: `npm --prefix backend start` e, em outro terminal, `npm --
 
 Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_FILE` (arquivo SQLite, padrão `biblioteca.sqlite`).
 
-> **Implantação:** o Azure Static Web Apps publica apenas o frontend (`frontend/dist`). A API Node precisa ser hospedada em um serviço de servidor (por exemplo, Azure App Service), pois o Static Web Apps não executa o Express.
-
-## Telas do sistema
-
-| | |
-|---|---|
-| ![Login](docs/telas/01-login.png) | ![Cadastro](docs/telas/02-cadastro.png) |
-| ![Acervo do leitor](docs/telas/03-acervo-leitor.png) | ![Empréstimos do leitor](docs/telas/04-emprestimos-leitor.png) |
-| ![Acervo do bibliotecário](docs/telas/05-acervo-admin.png) | ![Empréstimos do bibliotecário](docs/telas/06-emprestimos-admin.png) |
-| ![Usuários](docs/telas/07-usuarios-admin.png) | ![Regra de exclusão](docs/telas/08-erro-exclusao.png) |
-
-## Entrega
-
-- Relatório em PDF: [`docs/entrega/Trabalho-Biblioteca-Bruno-Rocha-2612659.pdf`](docs/entrega/Trabalho-Biblioteca-Bruno-Rocha-2612659.pdf)
-- Saída dos testes e das chamadas à API: [`docs/entrega/evidencias.txt`](docs/entrega/evidencias.txt)
+> **Implantação:** o frontend roda no Azure Static Web Apps e a API no Render (veja a seção "Publicação na nuvem" acima). Localmente, `npm start` serve API e frontend juntos.
 
 ## Estrutura do repositório
 
@@ -84,10 +70,18 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 
 ## Publicação na nuvem (sistema completo online)
 
-- **Frontend (tela):** Azure Static Web Apps — https://salmon-desert-024b56b10.4.azurestaticapps.net
-- **API (Node + SQLite):** Render (plano gratuito), em https://biblioteca-unifor-api.onrender.com, definida em `render.yaml`. O frontend encontra a API pela URL em `frontend/public/config.js` (`window.API_URL`).
-- O disco do plano gratuito é temporário; por isso, com a variável `SEED_SENHA` definida, o sistema recria na inicialização as contas `bibliotecario@unifor.br` (bibliotecário) e `leitor@unifor.br` (leitor), com essa senha, e 4 livros de exemplo.
-- Variáveis na API: `JWT_SECRET`, `SEED_SENHA` e `CORS_ORIGIN` (endereço do Static Web Apps).
+**Sistema online:** https://salmon-desert-024b56b10.4.azurestaticapps.net
+
+| Parte | Plataforma | Endereço |
+|---|---|---|
+| Frontend (React) | Microsoft Azure — Static Web Apps, com implantação contínua via GitHub Actions | https://salmon-desert-024b56b10.4.azurestaticapps.net |
+| API REST (Node + SQLite) | Render — Web Service gratuito (`render.yaml`) | https://biblioteca-unifor-api.onrender.com (`/api/saude`) |
+
+- O frontend encontra a API pela URL em `frontend/public/config.js` (`window.API_URL`); a API libera o frontend por CORS (`CORS_ORIGIN`).
+- **Contas de demonstração:** `bibliotecario@unifor.br` (bibliotecário) e `leitor@unifor.br` (leitor), com a senha definida em `SEED_SENHA` no Render.
+- O disco do plano gratuito é temporário: a cada reinício o banco é recriado, e com `SEED_SENHA` definida o sistema cria as duas contas e 4 livros de exemplo.
+- O serviço gratuito dorme após ~15 minutos sem uso; o primeiro acesso pode levar cerca de 50 segundos.
+- Variáveis da API: `JWT_SECRET` (gerada pelo Render), `SEED_SENHA` e `CORS_ORIGIN`.
 
 ## Publicação na nuvem (atividade anterior)
 

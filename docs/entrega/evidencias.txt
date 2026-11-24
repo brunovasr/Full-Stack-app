@@ -1,4 +1,4 @@
-EVIDÊNCIAS — Controle de Biblioteca (executado em 23/11/2026 18:12)
+EVIDÊNCIAS — Controle de Biblioteca (atualizado em 24/11/2026 13:38)
 
 == 1. GIT ==
 0439059 2026-11-23 Bruno Vasconcelos Rocha | feat: trocar domínio para sistema de controle de biblioteca
@@ -6,39 +6,48 @@ EVIDÊNCIAS — Controle de Biblioteca (executado em 23/11/2026 18:12)
 08c17af 2026-11-23 Bruno Vasconcelos Rocha | feat: backend REST com Node, SQLite, autenticação JWT e controle de papéis
 a2f61c7 2026-11-23 brunovasr | docs: adicionar prints da publicação ao README
 
-== 2. TESTES FORMAIS (node --test) ==
+== 2. TESTES FORMAIS (node --test) — 19 testes ==
 ▶ Autenticação
-  ✔ o primeiro usuário vira admin e o segundo, leitor (185.556597ms)
-  ✔ rejeita cadastro inválido e e-mail duplicado (90.281873ms)
-  ✔ login com credenciais corretas e incorretas (263.257863ms)
-  ✔ rotas protegidas exigem token válido (8.050642ms)
-✔ Autenticação (548.461946ms)
+  ✔ o primeiro usuário vira admin e o segundo, leitor (268.204213ms)
+  ✔ rejeita cadastro inválido e e-mail duplicado (114.476144ms)
+  ✔ login com credenciais corretas e incorretas (324.101033ms)
+  ✔ rotas protegidas exigem token válido (7.006385ms)
+✔ Autenticação (715.120445ms)
+▶ Saúde
+  ✔ rota de saúde responde 200 sem token (3.653901ms)
+✔ Saúde (3.84ms)
+▶ CORS
+  ✔ responde ao preflight e libera a origem do frontend (3.497547ms)
+✔ CORS (3.935294ms)
 ▶ Acervo
-  ✔ admin cadastra, edita, busca e exclui livro (103.241093ms)
-  ✔ leitor não pode cadastrar, editar nem excluir livros (403) (154.687871ms)
-  ✔ valida dados do livro (84.605651ms)
-  ✔ não exclui livro emprestado nem reduz total abaixo dos emprestados (172.450735ms)
-✔ Acervo (515.482285ms)
+  ✔ admin cadastra, edita, busca e exclui livro (110.927705ms)
+  ✔ leitor não pode cadastrar, editar nem excluir livros (403) (194.758411ms)
+  ✔ valida dados do livro (94.722913ms)
+  ✔ não exclui livro emprestado nem reduz total abaixo dos emprestados (187.332314ms)
+✔ Acervo (588.224494ms)
 ▶ Empréstimos
-  ✔ empresta e devolve no prazo, ajustando o estoque e sem multa (160.775284ms)
-  ✔ cobra multa de R$ 1,00 por dia de atraso (158.401143ms)
-  ✔ recusa empréstimo sem exemplar, duplicado ou acima do limite de 3 (215.827733ms)
-  ✔ renova uma única vez e não renova em atraso (161.982219ms)
-  ✔ autorização: leitor não vê nem altera empréstimo de outro; admin vê todos (257.09606ms)
-✔ Empréstimos (954.61493ms)
+  ✔ empresta e devolve no prazo, ajustando o estoque e sem multa (200.487858ms)
+  ✔ cobra multa de R$ 1,00 por dia de atraso (190.233388ms)
+  ✔ recusa empréstimo sem exemplar, duplicado ou acima do limite de 3 (293.009448ms)
+  ✔ renova uma única vez e não renova em atraso (192.883396ms)
+  ✔ autorização: leitor não vê nem altera empréstimo de outro; admin vê todos (293.073174ms)
+✔ Empréstimos (1170.063918ms)
 ▶ Administração de usuários
-  ✔ leitor recebe 403 nas rotas de admin (162.139223ms)
-  ✔ admin lista, altera papel e exclui usuários (168.606004ms)
-  ✔ não exclui usuário com empréstimo em aberto; admin não altera nem exclui a si mesmo (171.597787ms)
-✔ Administração de usuários (502.655496ms)
-ℹ tests 16
-ℹ suites 4
-ℹ pass 16
+  ✔ leitor recebe 403 nas rotas de admin (204.981787ms)
+  ✔ admin lista, altera papel e exclui usuários (190.379684ms)
+  ✔ não exclui usuário com empréstimo em aberto; admin não altera nem exclui a si mesmo (191.701448ms)
+✔ Administração de usuários (587.398137ms)
+▶ Dados de demonstração
+  ✔ semeia banco vazio uma única vez e permite login (184.267768ms)
+✔ Dados de demonstração (184.427734ms)
+ℹ tests 19
+ℹ suites 7
+ℹ pass 19
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 2757.496253
+ℹ duration_ms 3725.845155
 
 == 3. API EM EXECUÇÃO ==
 -- sem token (401):
@@ -84,3 +93,7 @@ assets/index-BuwUS9EY.css
 -- banco SQLite:
 usuarios, livros, emprestimos
 maria@x.com $2a$10$xQgP0TVav...
+
+== 5. PUBLICAÇÃO NA NUVEM ==
+API (Render): https://biblioteca-unifor-api.onrender.com/api/saude -> {"status":"ok"}
+Tela (Azure Static Web Apps): https://salmon-desert-024b56b10.4.azurestaticapps.net (login e acervo funcionando, consumindo a API do Render)
