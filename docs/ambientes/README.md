@@ -14,7 +14,11 @@ Quadro **"Gestão do projeto Biblioteca UNIFOR"** com as listas Backlog, Em dese
 
 ## 2. Ambiente de design de interfaces (UI/UX) — Figma
 
-**Pendente:** protótipo das telas (login, acervo, empréstimos e usuários) e print do arquivo aberto no Figma.
+Arquivo **"Design biblioteca UNIFOR"** no **Figma** com o protótipo das quatro telas do sistema (Login, Acervo, Empréstimos e Usuários), em quadros de 1100 × 700 px, no visual branco e azul da aplicação.
+
+![Protótipo das telas no Figma](02-figma-telas-prototipo.jpg)
+
+![Tela de acervo no Figma](02-figma-tela-acervo.jpg)
 
 ## 3. Ambiente de desenvolvimento — IDE
 
