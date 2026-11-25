@@ -67,6 +67,7 @@ Variáveis de ambiente: `PORT`, `JWT_SECRET` (obrigatório em produção) e `DB_
 - `.github/workflows/` — fluxo de implantação do Azure Static Web Apps
 - `docs/telas/` — prints do sistema; `docs/entrega/` — PDF e evidências
 - `docs/img/` — prints da publicação na nuvem (atividade anterior)
+- `docs/ambientes/` — evidências da atividade de ambientes de desenvolvimento (Trello, banco, testes, execução); `e2e/` — teste de interface com Selenium
 
 ## Publicação na nuvem (sistema completo online)
 
