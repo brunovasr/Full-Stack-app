@@ -24,6 +24,20 @@ Protótipo das quatro telas do sistema (Login, Acervo, Empréstimos e Usuários)
 
 ![Tela de Acervo no Figma](docs/ambientes/02-figma-tela-acervo.jpg)
 
+#### Interface do Figma implementada no sistema
+
+O protótipo foi implementado no frontend React (login em painel dividido, cabeçalho com abas, cartões do acervo, tabelas de empréstimos e usuários), mantendo as regras de negócio e a API. Telas do sistema em execução:
+
+![Login](docs/telas/interface/01-login.png)
+
+![Acervo (bibliotecário)](docs/telas/interface/02-acervo-bibliotecario.png)
+
+![Acervo (leitor)](docs/telas/interface/04-acervo-leitor.png)
+
+![Empréstimos (leitor)](docs/telas/interface/05-emprestimos-leitor.png)
+
+![Usuários](docs/telas/interface/03-usuarios.png)
+
 ### 3. Ambiente de desenvolvimento — Visual Studio Code
 
 Projeto aberto no VS Code, com `backend/`, `frontend/` e `docs/` no Explorador e o Git na barra inferior.

@@ -40,7 +40,7 @@ def print_tela(nome):
 try:
     nav.get(URL)
     espera.until(EC.presence_of_element_located((By.TAG_NAME, "h1")))
-    assert nav.find_element(By.TAG_NAME, "h1").text == "Entrar"
+    assert nav.find_element(By.TAG_NAME, "h1").text == "Acesse sua conta"
     print("[ok] tela de login carregada")
     print_tela("01-login")
 
